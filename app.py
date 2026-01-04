@@ -4,7 +4,7 @@ import numpy as np
 import os
 from werkzeug.utils import secure_filename
 from ultralytics import YOLO
-
+import time  
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -94,11 +94,14 @@ def upload():
     file.save(path)
 
     count, images = process_image(path)
+    
+
+    timestamp = int(time.time() * 1000)
 
     return jsonify(
         success=True,
         count=count,
-        images={k: f"/results/{os.path.basename(v)}" for k, v in images.items()}
+        images={k: f"/results/{os.path.basename(v)}?t={timestamp}" for k, v in images.items()}
     )
 
 
